@@ -67,7 +67,7 @@ vn30_dashboard/
 git clone https://github.com/NhiTrinh005/vn30_dashboard.git
 ```
 ```bash
-cd vn30-dashboard
+cd vn30_dashboard
 ```
 
 **2. Yêu cầu cài đặt**
