@@ -1458,65 +1458,74 @@ with tabs[6]:
 
                     st.session_state.messages.append({"role": "assistant", "content": str(resp)})
 
-    # --- 5. CỘT PHẢI: REPORT GENERATOR ---
+    # --- 5. CỘT PHẢI: REPORT GENERATOR (ĐÃ SỬA LỖI ẢNH) ---
     with col_report:
         with st.container(border=True):
             st.markdown('<div class="pro-header">STRATEGIC REPORT GENERATOR</div>', unsafe_allow_html=True)
-
-            st.warning(
-                "⚠️ **Lưu ý:** Báo cáo được tạo tự động bởi thuật toán (AI Generated). Số liệu chỉ mang tính tham khảo.")
+            st.warning("⚠️ **Lưu ý:** Báo cáo được tạo tự động bởi thuật toán (AI Generated).")
 
             with st.form("final_report_form_v5"):
                 c1, c2 = st.columns(2)
-                with c1: r_title = st.text_input("Tiêu đề báo cáo:", "BÁO CÁO CHIẾN LƯỢC ĐẦU TƯ VN30")
+                with c1: r_title = st.text_input("Tiêu đề:", "BÁO CÁO CHIẾN LƯỢC ĐẦU TƯ VN30")
                 with c2: r_author = st.text_input("Người lập:", "Portfolio Manager")
-                submit_btn = st.form_submit_button("TẠO BÁO CÁO", type="primary",
-                                                   use_container_width=True)
+                submit_btn = st.form_submit_button("TẠO BÁO CÁO HTML", type="primary", use_container_width=True)
 
             if submit_btn:
                 try:
-                    # A. PREPARE CHARTS
+                    # === HÀM HỖ TRỢ: CHUYỂN FIG THÀNH HTML ẢNH (BASE64) ===
+                    def fig_to_html_img(fig):
+                        # Yêu cầu cài: pip install kaleido
+                        img_bytes = fig.to_image(format="png", width=800, height=400, scale=2)
+                        encoded = base64.b64encode(img_bytes).decode()
+                        return f'<img src="data:image/png;base64,{encoded}" style="width:100%; height:auto; border-radius:8px;">'
+
+
+                    # A. PREPARE CHARTS (CHUYỂN THÀNH ẢNH HẾT)
+                    # 1. Bảng số liệu (Giữ nguyên vì là Table HTML chuẩn)
                     html_metrics = df_metrics.rename(
                         columns={'LoiSuatTB_Nam': 'Lợi suất/Năm', 'RuiRo_Nam (Std)': 'Rủi ro (Std)',
                                  'Sharpe_Ratio': 'Sharpe Ratio'}).to_html(classes='',
                                                                           float_format='{:,.2f}'.format) if df_metrics is not None else "No Data"
 
+                    # 2. Biểu đồ Growth (Chuyển thành ảnh)
                     html_growth = ""
                     if df_growth is not None:
                         df_p = df_growth.reset_index()
                         fig = px.line(df_p.melt(id_vars=df_p.columns[0]), x=df_p.columns[0], y='value',
                                       color='variable', color_discrete_sequence=['#0052cc', '#333'])
-                        fig.update_layout(height=300, margin=dict(l=0, r=0, t=20, b=0), template="plotly_white",
+                        fig.update_layout(height=300, margin=dict(l=20, r=20, t=40, b=20), template="plotly_white",
                                           title="Wealth Growth Index")
-                        html_growth = fig.to_html(full_html=False, include_plotlyjs='cdn')
+                        html_growth = fig_to_html_img(fig)  # <--- Dùng hàm chuyển ảnh
 
+                    # 3. Biểu đồ CAPM (Chuyển thành ảnh)
                     html_capm = ""
                     if df_capm is not None:
                         c_b = [c for c in df_capm.columns if 'beta' in c.lower()][0]
                         top5 = df_capm.nlargest(5, c_b)
                         fig = px.bar(top5, x=top5.index, y=c_b, color=c_b, color_continuous_scale='Reds')
-                        fig.update_layout(height=280, margin=dict(l=0, r=0, t=20, b=0), template="plotly_white",
+                        fig.update_layout(height=280, margin=dict(l=20, r=20, t=40, b=20), template="plotly_white",
                                           title="Top High Beta Stocks")
-                        html_capm = fig.to_html(full_html=False, include_plotlyjs='cdn')
+                        html_capm = fig_to_html_img(fig)  # <--- Dùng hàm chuyển ảnh
 
+                    # 4. Biểu đồ Forecast (Chuyển thành ảnh)
                     html_fc = ""
                     if df_fc is not None:
                         cols = [c for c in df_fc.columns if any(x in c.lower() for x in ['forecast', 'mean', 'dubao'])]
                         if cols:
                             fig = go.Figure(go.Scatter(x=df_fc.index, y=df_fc[cols[0]], mode='lines+markers',
                                                        line=dict(color='#ff6d00')))
-                            fig.update_layout(height=280, margin=dict(l=0, r=0, t=20, b=0), template="plotly_white",
+                            fig.update_layout(height=280, margin=dict(l=20, r=20, t=40, b=20), template="plotly_white",
                                               title="ARIMA Forecast")
-                            html_fc = fig.to_html(full_html=False, include_plotlyjs='cdn')
+                            html_fc = fig_to_html_img(fig)  # <--- Dùng hàm chuyển ảnh
 
-                    # B. GENERATE TEXT (ĐÃ CẬP NHẬT INSIGHT SÂU SẮC HƠN)
+                    # B. GENERATE TEXT (Giữ nguyên logic của bạn)
                     txt_port = generate_smart_content("PORTFOLIO", df_metrics, None, None)
                     txt_risk = generate_smart_content("RISK", None, df_capm, None)
                     txt_fc = generate_smart_content("FORECAST", None, None, df_fc)
                     txt_mom = generate_smart_content("MOMENTUM", None, None, None)
                     txt_final = generate_smart_content("CONCLUSION", df_metrics, df_capm, df_fc)
 
-                    # C. HTML TEMPLATE
+                    # C. HTML TEMPLATE (Giữ nguyên Template của bạn)
                     today_str = datetime.datetime.now().strftime("%d %B, %Y")
                     html_template = f"""
                     <!DOCTYPE html>
@@ -1568,9 +1577,14 @@ with tabs[6]:
                     </body>
                     </html>
                     """
+
+                    # Encode và tạo nút Download
                     b64 = base64.b64encode(html_template.encode()).decode()
                     href = f'<a href="data:text/html;base64,{b64}" download="Final_Report_{datetime.date.today()}.html"><button style="background:#0052cc;color:white;padding:15px 30px;border:none;border-radius:6px;cursor:pointer;width:100%;font-weight:600;">📥 DOWNLOAD REPORT</button></a>'
-                    st.success("✅ Đã tạo báo cáo thành công!")
+
+                    st.success("✅ Đã tạo báo cáo thành công! (Charts embedded as Images)")
                     st.markdown(href, unsafe_allow_html=True)
+
                 except Exception as e:
                     st.error(f"Lỗi: {e}")
+                    st.info("💡 Gợi ý: Hãy chắc chắn bạn đã cài kaleido bằng lệnh: pip install kaleido")

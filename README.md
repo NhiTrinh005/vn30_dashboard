@@ -8,7 +8,7 @@
 ---
 ## Thông tin Tác giả
 
- **Developer**: **Trinh Hue Nhi** 
+**Developed by:** Trinh Hue Nhi | 2026
 
 ---
 ## Tính năng Chính (Key Features)
@@ -60,21 +60,31 @@ vn30_dashboard/
 ```
 ---
 ## Cài đặt & Hướng dẫn Sử dụng
-**1. Yêu cầu cài đặt**
+Để chạy dự án này trên máy cá nhân, bạn vui lòng làm theo các bước sau:
+
+**1. Clone dự án về máy:**
+```bash
+git clone https://github.com/NhiTrinh005/vn30_dashboard.git
+```
+```bash
+cd vn30-dashboard
+```
+
+**2. Yêu cầu cài đặt**
 Dự án sử dụng **Python 3.12**. Để đảm bảo mã nguồn chạy ổn định, vui lòng cài đặt các thư viện cần thiết bằng lệnh sau trong Terminal:
 ```bash
 pip install -r requirements.txt
 ```
 *(Nếu cài thủ công, các thư viện chính bao gồm: `pandas`, `numpy`, `matplotlib`, `seaborn`, `yfinance`, `statsmodels`, `pmdarima`, `scikit-learn`, `streamlit`, `plotly`,`openai`,`requests`, `openpyxl`.*
 
-**2. Cập nhật Dữ liệu (Pipeline)**
+**3. Cập nhật Dữ liệu (Pipeline)**
 - Dự án tích hợp script tự động hóa. Để cập nhật dữ liệu và chạy lại toàn bộ mô hình (từ bước 1 đến bước 7), bạn chỉ cần chạy một lệnh duy nhất:
 ```bash
 python code/run_pipeline.py
 ```
 (Hệ thống sẽ tự động tải data mới -> làm sạch -> chạy CAPM -> ARIMA -> Momentum -> Lưu kết quả)
 
-**3. Khởi động Dashboard Tương tác**
+**4. Khởi động Dashboard Tương tác**
 Dự án bao gồm một Dashboard trực quan được xây dựng bằng **Streamlit**, cho phép xem kết quả và biểu đồ tương tác. Cách chạy Dashboard:
 3.1. Mở Terminal tại thư mục gốc của dự án.
 3.2.  Chạy lệnh sau:
@@ -83,6 +93,20 @@ streamlit run code/dashboard.py
 ```
 Trình duyệt web sẽ tự động mở ra giao diện Dashboard. Truy cập tại địa chỉ: http://localhost:8501.
 
+---
+## Demo & Screenshots
+Dưới đây là giao diện chính của hệ thống Dashboard sau khi chạy:
+
+**1. Giao diện tab Overview của Dashboard VN30**
+![Overview](screenshots/dashboard_overview.png)
+
+**2. Giao diện tab Utilities của Dashboard VN30**
+
+Tính năng **"One-click Report"** giúp tự động tổng hợp dữ liệu, nhận định từ AI và xuất bản báo cáo chiến lược dưới dạng PDF chuyên nghiệp (thay thế thao tác thủ công).
+![Utilities](screenshots/dashboard_ai_analysis.png)
+
+**3. Hình ảnh trích xuất từ báo cáo:**
+![PDF Preview](screenshots/pdf_preview.png)
 ---
 ## ❗Giả định, Hạn chế và Lưu ý
 **Dự án được xây dựng với mục đích học thuật, không cấu thành lời khuyên tài chính hoặc khuyến nghị đầu tư. Do đó tồn tại một số giả định đơn giản hóa:**

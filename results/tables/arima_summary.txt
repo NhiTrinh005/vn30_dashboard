@@ -1,22 +1,21 @@
                                SARIMAX Results                                
 ==============================================================================
-Dep. Variable:                      y   No. Observations:                   29
-Model:               SARIMAX(0, 1, 1)   Log Likelihood                  30.917
-Date:                Thu, 01 Jan 2026   AIC                            -57.834
-Time:                        21:28:57   BIC                            -55.170
-Sample:                    08-31-2023   HQIC                           -57.019
-                         - 12-31-2025                                         
+Dep. Variable:                      y   No. Observations:                   30
+Model:               SARIMAX(0, 1, 0)   Log Likelihood                  26.396
+Date:                Mon, 12 Jan 2026   AIC                            -50.792
+Time:                        22:26:45   BIC                            -49.425
+Sample:                    08-31-2023   HQIC                           -50.364
+                         - 01-31-2026                                         
 Covariance Type:                  opg                                         
 ==============================================================================
                  coef    std err          z      P>|z|      [0.025      0.975]
 ------------------------------------------------------------------------------
-ma.L1         -0.8553      0.107     -7.967      0.000      -1.066      -0.645
-sigma2         0.0061      0.002      3.113      0.002       0.002       0.010
+sigma2         0.0095      0.003      3.782      0.000       0.005       0.014
 ===================================================================================
-Ljung-Box (L1) (Q):                   0.33   Jarque-Bera (JB):                 0.64
-Prob(Q):                              0.57   Prob(JB):                         0.73
-Heteroskedasticity (H):               0.70   Skew:                            -0.08
-Prob(H) (two-sided):                  0.60   Kurtosis:                         2.28
+Ljung-Box (L1) (Q):                   3.59   Jarque-Bera (JB):                 0.89
+Prob(Q):                              0.06   Prob(JB):                         0.64
+Heteroskedasticity (H):               0.95   Skew:                             0.43
+Prob(H) (two-sided):                  0.94   Kurtosis:                         3.05
 ===================================================================================
 
 Warnings:
