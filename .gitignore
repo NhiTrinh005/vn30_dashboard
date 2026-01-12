@@ -1,0 +1,22 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+
+# --- Mac OS (File rác của máy Mac) ---
+.DS_Store
+
+# --- Môi trường ảo (Virtual Env) ---
+venv/
+env/
+.venv/
+doan_vn30/
+
+# --- IDE (Cấu hình trình soạn thảo) ---
+.vscode/
+.idea/
+
+# --- Dữ liệu nhạy cảm & File tạm ---
+.env
+*.key
+*.log
